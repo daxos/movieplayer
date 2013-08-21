@@ -1,0 +1,29 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.4.1
+Title=Movie player example
+Startup=FMoviePlayer
+Icon=icono.png
+Version=3.0.40
+Component=gb.image
+Component=gb.qt4
+Component=gb.form
+Component=gb.db
+Component=gb.db.sqlite3
+Component=gb.qt4.ext
+Environment="GB_GUI=gb.qt4"
+TabSize=2
+Translate=1
+Language=fr
+ControlPublic=1
+ModulePublic=1
+Maintainer=david
+Vendor=Dax OS
+Address=davidmf16@gmail.com
+Url=http://www.daxos.org/
+License=General Public Licence
+PackageName=movieplayer-3.0.26
+Packager=1
+Systems=ubuntu
+Menus=ubuntu:"Applications/Video"
+Categories=ubuntu:"Video"
+Groups=ubuntu:"x11"

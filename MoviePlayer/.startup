@@ -1,0 +1,13 @@
+FMoviePlayer
+Movie player example
+0
+0
+3.0.39
+
+gb.image
+gb.qt4
+gb.form
+gb.db
+gb.db.sqlite3
+gb.qt4.ext
+

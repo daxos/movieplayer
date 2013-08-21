@@ -1,0 +1,18 @@
+' Gambas class file
+
+Public Media_Length As String = ""      'in seconds
+Public Media_percent_pos As String = ""
+
+Public Sub CurrentTime() As String
+
+  Dim timeint As Integer = 0
+
+'  Try timeint = Val(Trim(Mid(Playeroutput, 3, InStr(playeroutput, ".") - 3)))
+  If Error Then
+'    Return previoustime
+  Else
+  '  previoustime = CStr(timeint)
+   ' Return previoustime
+  Endif
+
+End

@@ -1,0 +1,22 @@
+' Gambas class file
+
+Private $hProcess As Process
+Private $sPath As String
+
+Public Sub aumentar_Click()
+
+   Print FMoviePlayer.#$hProcess, "5";
+
+End
+
+Public Sub disminuir_Click()
+
+   Print #$hProcess, "4";
+
+End
+
+Public Sub Form_Open()
+
+ $hProcess = Exec ["mplayer", "-wid", CStr(FMoviePlayer.dwgMoviePlayer.Handle), Conv$($sPath, Desktop.Charset, System.Charset)] For Read Write As "Process"
+
+End

@@ -1,0 +1,409 @@
+' Gambas class file
+
+Private $hProcess As Process
+Private $bQuit As Boolean
+Private $sPath As String
+Private $bShow As Boolean
+Private $hProcessyou As Process
+
+Public Sub Form_Resize()
+
+  dwgMoviePlayer.Move(8, 8, Me.ClientW - 0, Me.ClientH - panButton.H - 8)
+  panButton.Move(0, Me.CLientH - panButton.H, Me.CLientW)
+  
+End
+
+Public Sub Form_Open()
+   
+   Mod_skin.skin
+   
+   If Label1.Text = "True" Then
+     skin_Click
+     Else
+       skin2_Click
+   Endif
+   
+   Print "Wid = "; Hex$(dwgMoviePlayer.id)
+  dwgMoviePlayer.show
+  Label1.SetFocus
+  
+End
+
+
+Public Sub form_Drop()
+
+Dim a As String
+ 
+  a = Drag.Paste()
+  a = RTrim(a)
+
+  a = Replace$(a, "%20", " ")
+  a = Replace$(a, "%C3%A1", "á")
+  a = Replace$(a, "%C3%A9", "é")
+  a = Replace$(a, "%C3%AD", "í")
+  a = Replace$(a, "%C3%B3", "ó")
+  a = Replace$(a, "%C3%BA", "ú")
+  a = Replace$(a, "%C3%81", "Á")
+  a = Replace$(a, "%C3%89", "É")
+  a = Replace$(a, "%C3%8D", "Í")
+  a = Replace$(a, "%C3%93", "Ó")
+  a = Replace$(a, "%C3%9A", "Ú")
+  a = Replace$(a, "%C3%B1", "ñ")
+  a = Replace$(a, "%C3%91", "Ñ")
+  a = Replace$(a, "file://", "")
+  a = Replace$(a, "%5B", "[")
+  a = Replace$(a, "%5D", "]")
+  
+
+  $sPath = a
+  
+  StopMovie
+  btnPlay_click
+  TextLabel1.text = a
+  PictureBox1.Hide
+  btnnext.Show
+  before.Show
+  
+
+  
+End
+
+
+Public Sub btnPlay_Click()
+
+  If $hProcess Then
+    Print #$hProcess, " ";
+    btnPlay.hide
+    btnPause.show
+    'PRINT "CONTINUE"
+    Return
+  Endif
+
+
+
+  With dwgMoviePlayer
+    Form_Resize
+    .Show
+    .Enabled = False
+  '  '.Mouse = Mouse.Default
+  '  Form_Resize
+  '  '.Enabled = FALSE
+  End With
+
+  $bShow = True
+
+  $hProcess = Exec ["mplayer", "-wid", CStr(dwgMoviePlayer.Handle), Conv$($sPath, Desktop.Charset, System.Charset)] For Read Write As "Process"
+
+  btnStop.Enabled = True
+  btnPlay.hide
+  btnPause.show
+  'dwgMoviePlayer.Hide
+  'timShow.Enabled = True
+
+End
+
+Public Sub btnPause_MouseDown()
+
+  If Not $hProcess Then Return
+  Print #$hProcess, " ";
+  '$hProcess.Send(" ") '("pause\n")
+  btnPlay.show
+  btnPause.hide
+  'PRINT "PAUSE"
+
+  
+End
+
+Public Sub btnStop_MouseDown()
+
+  If Not $hProcess Then Return
+  If $bQuit Then
+    $hProcess.Kill
+  Else
+    Print #$hProcess, "q";
+    $bQuit = True
+  Endif
+
+End
+
+Public Sub Process_Read()
+  
+  Dim sData As String
+  
+  sData = Read #Last, -255
+  
+End
+
+
+Public Sub Process_Kill()
+
+  $hProcess = Null
+  timShow.Enabled = False
+  $bQuit = False
+  $bShow = False
+  btnPause.hide
+  btnPlay.show
+  btnStop.Enabled = False
+  dwgMoviePlayer.Hide
+
+  'PRINT "STOP"
+
+End
+
+
+Private Sub StopMovie()
+
+  If Not $hProcess Then Return
+
+  $hProcess.Kill
+  'While $hProcess
+  '  Wait
+  'Wend
+
+End
+
+
+Public Sub btnOpen_Click()
+
+  Dialog.Path = $sPath
+  If Dialog.OpenFile() Then Return
+  $sPath = Dialog.Path
+  
+  StopMovie
+  Wait
+  btnPlay_click
+  TextLabel1.text = Dialog.Path
+  PictureBox1.Hide
+  'btnPlay_click
+  
+End
+
+
+
+Public Sub timShow_Timer()
+
+  dwgMoviePlayer.Resize(1, 1)
+  dwgMoviePlayer.Show
+  FORM_Resize
+  timShow.Enabled = False
+
+End
+
+
+Public Sub dwgMoviePlayer_DblClick()
+
+If FMoviePlayer.FullScreen = True Then
+  panButton.Show
+  FMoviePlayer.FullScreen = False
+HBox3.Show
+  Else
+    FMoviePlayer.FullScreen = True
+    panbutton.Hide
+    HBox3.Hide
+Endif
+
+
+
+End
+
+
+
+Public Sub TextLabel1_MouseDown()
+
+  
+
+End
+
+Public Sub PictureBox1_MouseDown()
+
+btnOpen_Click
+btnnext.Show
+before.Show
+'progress.Show
+
+End
+
+
+
+
+
+Public Sub btnnext_Click()
+
+  If $hProcess Then
+    'Print #$hProcess, "}";
+    Print #$hProcess, ">";
+  Endif
+
+End
+
+
+Public Sub before_Click()
+
+
+Print #$hProcess, "<";
+
+
+End
+
+Public Sub aumentar_Click()
+
+Print #$hProcess, "*"; 
+
+End
+
+Public Sub disminuir_Click()
+
+  Print #$hProcess, "/";
+
+End
+
+
+Public Sub ajustes_Click()
+
+If HBox7.Visible = True Then
+ HBox7.Hide
+ panButton.Show
+  Else
+HBox7.show
+panbutton.Hide
+Endif
+
+
+End
+
+Public Sub ToolButton1_Click()
+
+If panel8.Visible = True Then
+ panel8.Hide
+  Else
+panel8.Show
+Endif
+
+  'Print #$hProcess, "<>";
+
+End
+
+
+
+Public Sub progress_Change()
+
+
+End
+
+
+
+Public Sub ocultar_Click()
+
+If panel8.Visible = True Then
+  panel8.hide 
+  Else
+HBox7.Hide
+panButton.Show
+
+Endif
+End
+
+Public Sub open_Click()
+
+StopMovie
+btnOpen_Click
+HBox7.Hide
+panButton.Show
+btnnext.Show
+before.Show
+
+End
+
+Public Sub aumentarbrillo_Click()
+
+  Print #$hProcess, "<4>";
+
+End
+
+Public Sub disminuirbrillo_Click()
+
+Print #$hProcess, "<3>";
+
+End
+
+Public Sub disminuirsatu_Click()
+
+Print #$hProcess, "<5>";
+
+End
+
+Public Sub aumentarsatur_Click()
+
+Print #$hProcess, "<6>";
+
+End 
+
+
+Public Sub Button1_Click()
+
+Print #$hProcess, "";
+
+End
+
+Public Sub frame_Click()
+
+Print #$hProcess, "<d>";
+
+End
+
+
+Public Sub skin_Click()
+
+Mod_skin.cambiar_skin
+FMoviePlayer.Background = &DFDFDF&
+soundonpic.Picture = Picture.Load("Sound2.png")
+'TextLabel1.Foreground = &394C5F&
+skin2.Show
+skin.Hide
+
+End
+
+Public Sub skin2_Click()
+
+Mod_skin.cambiar_skin2
+FMoviePlayer.Background = &H4E4E4E&
+soundonpic.Picture = Picture.Load("Sound.png")
+'TextLabel1.Foreground = &H91C2F3&
+skin2.Hide
+skin.Show
+
+End
+
+Public Sub form_Close()
+  
+StopMovie
+btnPause_MouseDown
+Me.Close
+  
+End
+
+
+Public Sub ToolButton2_Click()
+
+  Print #$hProcess, "<-cache 200  $(youtube-dl -g --max-quality mp4 https://www.youtube.com/watch?list=RD02_L-SqakkjfM&v=pwkuKOXeeKs>";
+
+End
+
+
+
+Public Sub soundonpic_MouseDown()
+
+soundonpic2.Visible = True
+soundonpic.hide
+Print #$hProcess, "<m>";
+
+
+End
+
+Public Sub soundonpic2_MouseDown()
+
+Print #$hProcess, "<m>";
+soundonpic2.Hide
+soundonpic.Show
+
+End

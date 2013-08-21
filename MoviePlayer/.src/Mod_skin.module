@@ -1,0 +1,42 @@
+' Gambas module file
+
+Private cx As Connection
+Private rs As Result
+Private rs_fav As Result
+'Public archivo_update As String = "http://daxos.org"
+
+Public Sub skin()
+
+  Dim consulta As String
+  
+ cx = Mod_DB.conectar()
+ consulta = "select * from change"
+ rs = cx.Exec(consulta)
+ FMoviePlayer.label1.Text = rs!skin
+ 
+End
+
+
+
+  Public Sub cambiar_skin()
+  Dim ejecutar As String
+  Dim valor As String
+  
+  valor = "True"
+  cx = Mod_DB.conectar() 
+  
+  ejecutar = "update change set skin = '" & valor & "' where change.id = " & 1 
+  rs = cx.Exec(ejecutar)
+  End
+  
+  Public Sub cambiar_skin2()
+  Dim ejecutar As String
+  Dim valor As String
+  
+  valor = "False"
+  cx = Mod_DB.conectar() 
+  
+  ejecutar = "update change set skin = '" & valor & "' where change.id = " & 1 
+  rs = cx.Exec(ejecutar)
+  
+  End

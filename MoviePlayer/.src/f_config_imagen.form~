@@ -1,0 +1,26 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,36)
+  Resizable = False
+  { Panel1 Panel
+    MoveScaled(0,0,65,6)
+    Background = &H3F3737&
+  }
+  { Panel2 Panel
+    MoveScaled(-1,30,66,6)
+    Background = &H3F3737&
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(2,8,7,7)
+    Picture = Picture["icon:/48/system"]
+  }
+  { disminuir ToolButton
+    MoveScaled(13,9,4,4)
+    Picture = Picture["menos.png"]
+  }
+  { aumentar ToolButton
+    MoveScaled(18,9,4,4)
+    Picture = Picture["plus.png"]
+  }
+}
